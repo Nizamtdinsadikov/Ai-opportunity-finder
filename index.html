@@ -1,42 +1,188 @@
 <!doctype html>
-<html lang="en">
+<html lang="uz">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI Opportunity Finder</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f4f7f6;
+      color: #333;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+      max-width: 600px;
+    }
+    header h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    header p {
+      color: #666;
+      font-size: 15px;
+    }
+    main {
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #444;
+    }
+    select, input, button {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      outline: none;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #randomBtn {
+      background-color: #28a745;
+    }
+    #randomBtn:hover {
+      background-color: #1e7e34;
+    }
+    .results {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .card {
+      background: #f8f9fa;
+      border-left: 5px solid #007bff;
+      padding: 15px;
+      border-radius: 6px;
+    }
+    .card h3 {
+      font-size: 16px;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+    footer {
+      margin-top: auto;
+      padding-top: 20px;
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>AI Opportunity Finder</h1>
-    <p>Discover problems and business opportunities globally and in Uzbekistan (Karakalpakstan focus).</p>
+    <p>O'zbekiston, Qoraqalpog'iston va dunyo bo'ylab sun'iy intellekt va biznes imkoniyatlarini toping.</p>
   </header>
 
   <main>
     <section class="controls">
-      <label for="region">Region:</label>
+      <label for="region">Hudud (Region):</label>
       <select id="region">
-        <option value="all">Global</option>
-        <option value="uzbekistan">Uzbekistan</option>
-        <option value="karakalpakstan">Karakalpakstan</option>
+        <option value="all">Barcha hududlar (Global)</option>
+        <option value="uzbekistan">O'zbekiston</option>
+        <option value="karakalpakstan">Qoraqalpog'iston</option>
       </select>
 
-      <label for="keyword">Keyword (optional):</label>
-      <input id="keyword" placeholder="e.g., water, education, transport" />
+      <label for="keyword">Kalit so'z (ixtiyoriy):</label>
+      <input id="keyword" placeholder="Masalan: suv, ta'lim, transport, qishloq xo'jaligi" />
 
-      <button id="findBtn">Find opportunities</button>
-      <button id="randomBtn">Surprise me</button>
+      <button id="findBtn">Imkoniyatlarni topish</button>
+      <button id="randomBtn">Tasodifiy g'oya (Surprise me)</button>
     </section>
 
     <section id="results" class="results">
-      <!-- Results will appear here -->
+      <!-- Natijalar shu yerda chiqadi -->
     </section>
   </main>
 
   <footer>
-    <small>Beginner-friendly. Built to collect ideas people might pay for.</small>
+    <small>Boshlovchilar uchun qulay. Pul keltirishi mumkin bo'lgan biznes g'oyalar to'plami.</small>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    const data = [
+      { region: 'karakalpakstan', title: 'Suv resurslarini aqlli monitoring qilish', desc: 'Qoraqalpog’istonda suv sarfini AI datchiklari orqali nazorat qilish va tejash tizimi.' },
+      { region: 'karakalpakstan', title: 'Tuz va chang bo‘ronlarini oldindan ogohlantirish', desc: 'Orolbo‘yi hududida sun’iy intellekt yordamida ekologik xavflarni bashorat qilish.' },
+      { region: 'uzbekistan', title: 'Onlayn ta’lim va Repetitor AI Bot', desc: 'Maktab o‘quvchilari uchun individual dars beruvchi AI assistent platformasi.' },
+      { region: 'uzbekistan', title: 'Qishloq xo‘jaligi ekinlari kasalligini aniqlash', desc: 'O‘simlik bargini rasmga olib, kasallikni va uning davosini ko‘rsatuvchi ilova.' },
+      { region: 'all', title: 'AI Kontent Yaratuvchi Avtomatizatsiya', desc: 'Bizneslar uchun SMM matnlari va rasmlarini avtomatik yaratib beruvchi xizmat.' }
+    ];
+
+    const findBtn = document.getElementById('findBtn');
+    const randomBtn = document.getElementById('randomBtn');
+    const results = document.getElementById('results');
+
+    function renderResults(list) {
+      results.innerHTML = '';
+      if (list.length === 0) {
+        results.innerHTML = '<p style="text-align:center; color:#888;">Hech narsa topilmadi. Boshqa kalit so\'z kiriting.</p>';
+        return;
+      }
+      list.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<h3>${item.title}</h3><p>${item.desc}</p>`;
+        results.appendChild(div);
+      });
+    }
+
+    findBtn.addEventListener('click', () => {
+      const reg = document.getElementById('region').value;
+      const key = document.getElementById('keyword').value.toLowerCase().trim();
+
+      let filtered = data.filter(item => {
+        const matchRegion = reg === 'all' || item.region === reg;
+        const matchKey = !key || item.title.toLowerCase().includes(key) || item.desc.toLowerCase().includes(key);
+        return matchRegion && matchKey;
+      });
+
+      renderResults(filtered);
+    });
+
+    randomBtn.addEventListener('click', () => {
+      const randomIndex = Math.floor(Math.random() * data.length);
+      renderResults([data[randomIndex]]);
+    });
+
+    renderResults(data);
+  </script>
 </body>
 </html>
