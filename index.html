@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Opportunity Finder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>AI Opportunity Finder</h1>
+    <p>Discover problems and business opportunities globally and in Uzbekistan (Karakalpakstan focus).</p>
+  </header>
+
+  <main>
+    <section class="controls">
+      <label for="region">Region:</label>
+      <select id="region">
+        <option value="all">Global</option>
+        <option value="uzbekistan">Uzbekistan</option>
+        <option value="karakalpakstan">Karakalpakstan</option>
+      </select>
+
+      <label for="keyword">Keyword (optional):</label>
+      <input id="keyword" placeholder="e.g., water, education, transport" />
+
+      <button id="findBtn">Find opportunities</button>
+      <button id="randomBtn">Surprise me</button>
+    </section>
+
+    <section id="results" class="results">
+      <!-- Results will appear here -->
+    </section>
+  </main>
+
+  <footer>
+    <small>Beginner-friendly. Built to collect ideas people might pay for.</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
